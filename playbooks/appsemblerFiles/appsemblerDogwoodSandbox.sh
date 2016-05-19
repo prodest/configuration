@@ -73,6 +73,7 @@ git checkout appsembler/feature/mergeDogwood.3
 ##
 cd /var/tmp/configuration
 sudo -H pip install -r requirements.txt
+sudo pip install setuptools --upgrade
 
 ##
 ## Run the edx_sandbox.yml playbook in the configuration/playbooks directory
