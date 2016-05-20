@@ -1,5 +1,0 @@
-#!/bin/bash
-set -e
-/sbin/my_init &
-cd /configuration/playbooks && \
-    ansible-playbook -i 127.0.0.1, -e@/tmp/server-vars.yml -vvv -c local docker_lite.yml 

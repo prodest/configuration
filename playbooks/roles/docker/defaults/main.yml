@@ -6,7 +6,6 @@ runit_lite_services:
   - mysql
   - nginx
   - supervisor
-  - supervisor.devpi
 
 runit_full_services:
   - elasticsearch
@@ -17,7 +16,6 @@ runit_full_services:
   - rabbitmq-server
   - redis-server
   - supervisor
-  - supervisor.devpi
 
 runit_lite_services_stop:
   - mysql

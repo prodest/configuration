@@ -8,7 +8,6 @@ sv start mysql || exit 1
 sv start redis-server || exit 1
 sv start rabbitmq-server || exit 1
 {% endif %}
-sv start supervisor.devpi || exit 1
 sv start mongodb || exit 1
 exec /sbin/setuser www-data /edx/app/supervisor/venvs/supervisor/bin/supervisord -c /edx/app/supervisor/supervisord.conf
 

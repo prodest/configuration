@@ -18,11 +18,11 @@
     COMMON_ENABLE_DATADOG: False
     COMMON_ENABLE_SPLUNKFORWARDER: False
     edx_ansible_source_repo: "https://github.com/appsembler/configuration"
-    configuration_version: 'appsembler_docker/feature/mergeCypress'
+    configuration_version: 'appsembler_docker/feature/mergeDogwood.3'
     # used for releases
     edx_platform_repo: "https://github.com/appsembler/edx-platform.git"
-    edx_platform_version: 'appsembler_docker/feature/mergeCypress'
-    forum_version: 'named-release/cypress'
+    edx_platform_version: 'appsembler_docker/feature/mergeDogwood.3'
+    forum_version: 'appsembler_docker/feature/mergeDogwood.3'
     #birch changes
     EDXAPP_PYTHON_SANDBOX: false
     EDXAPP_SANDBOX_ENFORCE: false
@@ -35,7 +35,10 @@
       lms: 1
       cms: 1
   roles:
+    - common
+    - vhost
     - edx_ansible
+    - user
     - { role: 'docker', version: 'lite', tags: 'runit' }
     - role: nginx
       nginx_sites:
@@ -45,15 +48,16 @@
       - forum
       nginx_default_sites:
       - lms
+    - mysql
     - edxlocal
-    - mongo
-    - edxapp
     - oraclejdk
     - elasticsearch
-    - forum
+    - mongo
+    - { role: 'rabbitmq', rabbitmq_ip: '127.0.0.1'  }
+    - edxapp
+    - { role: 'edxapp', celery_worker: True  }
     - demo
-    - { role: rabbitmq, rabbitmq_ip: '127.0.0.1' }
-    - edx_ansible
+    - forum
     - role: datadog
       when: COMMON_ENABLE_DATADOG
     - role: splunkforwarder
