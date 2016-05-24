@@ -9,6 +9,6 @@ cd /configuration/playbooks && \
 
 # Remove stale forum socket if it exists
 rm /edx/var/forum/forum.sock || true
-/edx/bin/supervisorctl restart forum
+# /edx/bin/supervisorctl restart forum
 
 sleep infinity  # Sleep forever so runit doesn't restart this script
