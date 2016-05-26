@@ -8,14 +8,3 @@ cd /configuration/playbooks && \
         -e role=mongo \
         -e@/tmp/server-vars.yml
 
-# Import Appsembler demo course
-rm -rf /edx/var/edxapp/data/
-cd /configuration/playbooks && \
-    ansible-playbook run_role.yml -i localhost, -c local \
-        -e role=demo \
-        -e demo_course_id=Appsembler/TEST205/course \
-        -e demo_code_dir=/edx/app/demo/appsembler-demo-course \
-        -e demo_repo=https://github.com/emrob/demo-course \
-
-# Enable celery workers. We do this here to avoid rerunning the edxapp role.
-ln -s /edx/app/supervisor/conf.available.d/workers.conf /edx/app/supervisor/conf.d/workers.conf
