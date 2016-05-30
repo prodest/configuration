@@ -60,3 +60,10 @@
     # run the docker scripts again to relink init.d scripts to runit
     - { role: 'docker', version: 'lite', tags: 'runit' }
 
+  post_tasks:
+    - name: fix django logging inside docker
+      lineinfile:
+        dest="/edx/app/edxapp/edx-platform/openedx/core/lib/logsettings.py"
+        regexp="/dev/log"
+        state=absent
+
