@@ -11,4 +11,13 @@ cd /configuration/playbooks && \
 rm /edx/var/forum/forum.sock || true
 # /edx/bin/supervisorctl restart forum
 
+# Workaround: Mongo users created on the first run of the Ansible playbook are
+# not persisted, probably due to runit weirdness. Creating the users after the
+# container has a chance to restart fixes the issue.
+cd /configuration/playbooks && \
+    ansible-playbook run_role.yml -i localhost, -c local \
+        -e role=mongo \
+        -e@/tmp/server-vars.yml \
+        --tags manage:app-users
+
 sleep infinity  # Sleep forever so runit doesn't restart this script
