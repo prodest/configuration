@@ -24,7 +24,7 @@ RUN make requirements
 WORKDIR /configuration/playbooks
 COPY docker/helpers/setup /root/
 RUN chmod 777 /root/setup
-RUN /root/setup && apt-get clean
+RUN /root/setup
 
 # Add configuration script to run on startup
 COPY docker/helpers/configure /etc/service/configure/run
