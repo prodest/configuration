@@ -11,7 +11,7 @@ requirements:
 	pip install -qr requirements.txt --exists-action w
 
 image:
-	@docker build --rm -t dogwood .
+	@docker build --rm -t appsembler/edx-lite-dogwood .
 
 # Targets in a Makefile which do not produce an output file with the same name as the target name
 .PHONY: help requirements
