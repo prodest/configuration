@@ -17,7 +17,6 @@ rm /edx/var/forum/forum.sock || true
 cd /configuration/playbooks && \
     ansible-playbook run_role.yml -i localhost, -c local \
         -e role=mongo \
-        -e@/tmp/server-vars.yml \
-        --tags manage:app-users
+        -e@/tmp/server-vars.yml
 
 sleep infinity  # Sleep forever so runit doesn't restart this script
