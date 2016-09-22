@@ -1,3 +1,4 @@
+---
 # override this in your server-vars.yml to back up to S3
 SCORM_S3_BACKUP: false
 # If there are any issues with the s3 sync an error
@@ -9,6 +10,8 @@ SCORM_S3_LOGS_FROM_EMAIL: dummy@example.com
 scorm_name: "scorm"
 scorm_asset_local_storage_path: "{{ edxapp_media_dir }}/{{ EDXAPP_XBLOCK_SETTINGS.ScormXBlock.SCORM_PKG_STORAGE_DIR | default('scorms')}}"
 scorm_player_local_storage_root: "{{ COMMON_DATA_DIR }}/edxapp/{{ EDXAPP_XBLOCK_SETTINGS.ScormXBlock.SCORM_PLAYER_LOCAL_STORAGE_ROOT|default('scormplayers') }}"
+
+nginx_includes_dir: "{{ nginx_app_dir }}/includes"
 
 scorm_dirs:
   home:
@@ -24,6 +27,11 @@ scorm_dirs:
   scorm_content_assets:
     path: "{{ scorm_asset_local_storage_path }}"
     owner: "www-data"
+    group: "www-data"
+    mode: "0744"
+  nginx_includes_dir:
+    path: "{{ nginx_includes_dir }}"
+    owner: "root"
     group: "www-data"
     mode: "0744"
 

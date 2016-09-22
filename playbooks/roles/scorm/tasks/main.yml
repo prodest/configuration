@@ -4,6 +4,7 @@
 - include_vars: "roles/common_vars/defaults/main.yml"
 - include_vars: "roles/edxapp/defaults/main.yml"
 - include_vars: "roles/edx_ansible/defaults/main.yml"
+- include_vars: "roles/nginx/defaults/main.yml"
 
 # - name: debug for edxapp include_vars
 #   debug: var=edxapp_use_custom_theme
@@ -96,13 +97,13 @@
 
 # you must still run the Nginx role after this.
 - name: copy Nginx templates to nginx role
-  copy: >
+  template: >
     src=nginx_extra_templates/{{item}}
-    dest={{ edx_ansible_code_dir }}/playbooks/roles/nginx/templates/edx/app/nginx/sites-available/{{item}}
-    owner=edx-ansible
-    group=edx-ansible
+    dest={{ nginx_includes_dir}}/{{item}}
+    owner=root
+    group=www-data
     mode=0644
   with_items:
-   - extra_locations_lms.j2
-   - static-files-extra.j2
-  when: EDXAPP_XBLOCK_SETTINGS.ScormXBlock
+   - scorm_extra_locations_lms.j2
+   - scorm_static_files.j2
+  when: EDXAPP_XBLOCK_SETTINGS.get('ScormXBlock') is defined
