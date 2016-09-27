@@ -22,6 +22,7 @@
     - { role: swapfile, SWAPFILE_SIZE: "2GB" }
     - role: scorm
       when: "{{ EDXAPP_XBLOCK_SETTINGS }}.get('ScormXBlock', False)"
+      tags: deploy
     - role: nginx
       nginx_sites:
       - certs
