@@ -116,7 +116,7 @@ EDXAPP_XBLOCK_SETTINGS:
       "ssla": {
         "name": "SSLA",
         "location": "/static/scorm/ssla/player.htm",
-        "repo": "https://github.com/appsembler/ssla-scorm-player.git",
+        "repo": "git@github.com:appsembler/ssla-scorm-player.git",
         "version": "nyif/master",
         "configuration": {}
       }
