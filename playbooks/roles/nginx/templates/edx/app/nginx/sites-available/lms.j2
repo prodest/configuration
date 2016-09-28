@@ -201,7 +201,7 @@ location ~ ^{{ EDXAPP_MEDIA_URL }}/(?P<file>.*) {
 
   {% include "robots.j2" %}
   {% include "static-files.j2" %}
-  {% if {{ EDXAPP_XBLOCK_SETTINGS }}.get('ScormXBlock', False) %}
+  {% if EDXAPP_XBLOCK_SETTINGS.get('ScormXBlock', False) %}
     # asterisk needed so it doesn't break if the file doesn't exist
     include {{nginx_app_dir}}/includes/scorm_extra_locations_lms*;
   {% endif %}

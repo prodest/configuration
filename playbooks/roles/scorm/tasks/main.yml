@@ -73,12 +73,12 @@
 # you must still run the Nginx role after this.
 - name: copy Nginx templates to nginx role
   template: >
-    src=nginx_extra_templates/{{item}}
+    src=nginx_extra_templates/{{item}}.j2
     dest={{ nginx_includes_dir}}/{{item}}
     owner=root
     group=www-data
     mode=0644
   with_items:
-   - scorm_extra_locations_lms.j2
-   - scorm_static_files.j2
+   - scorm_extra_locations_lms
+   - scorm_static_files
   when: EDXAPP_XBLOCK_SETTINGS.get('ScormXBlock') is defined
