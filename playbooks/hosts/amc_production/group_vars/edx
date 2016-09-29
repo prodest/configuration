@@ -124,6 +124,7 @@ EDXAPP_XBLOCK_SETTINGS:
     "SCORM_PKG_STORAGE_DIR": "scorms",
     "SCORM_DISPLAY_STAFF_DEBUG_INFO": true
   }
+nginx_cms_client_max_body_size: 20M
 
 SCORM_S3_BACKUP: true
 
