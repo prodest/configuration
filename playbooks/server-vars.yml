@@ -1,0 +1,240 @@
+---
+edx_platform_repo: "https://github.com/appsembler/edx-platform.git"
+edx_ansible_source_repo: "https://github.com/appsembler/configuration"
+
+EDX_VERSION: "open-release/eucalyptus.2"
+edx_platform_version: "appsembler/amc/develop"
+configuration_version: "appsembler/feature/merge_eucalyptus.2"
+certs_version: "{{ EDX_VERSION | default('open-release/eucalyptus.2') }}"
+forum_version: "{{ EDX_VERSION | default('open-release/eucalyptus.2') }}"
+xqueue_version: "{{ EDX_VERSION | default('open-release/eucalyptus.2') }}"
+
+EDXAPP_LMS_ENV: 'lms.envs.amc'
+EDXAPP_CMS_ENV: 'cms.envs.amc'
+
+
+EDXAPP_APPSEMBLER_FEATURES:
+  TMP: 'none'
+
+EDXAPP_FEATURES:
+  AUTH_USE_OPENID_PROVIDER: true  # default: true
+  ENABLE_OAUTH2_PROVIDER: true  # default: false
+  ALLOW_ALL_ADVANCED_COMPONENTS: true  # default: false
+  ENABLE_LTI_PROVIDER: true  # default: false
+  ENABLE_SYSADMIN_DASHBOARD: True  # default: false
+  CERTIFICATES_ENABLED: true  # default: true  <- check
+  ENABLE_DISCUSSION_SERVICE: true  # default: true
+  ENABLE_INSTRUCTOR_ANALYTICS: true  # default: false
+  PREVIEW_LMS_BASE: "{{ EDXAPP_PREVIEW_LMS_BASE }}"
+  ENABLE_S3_GRADE_DOWNLOADS: true  # default: true
+  USE_CUSTOM_THEME: "{{ edxapp_use_custom_theme }}"
+  ENABLE_MKTG_SITE: "{{ EDXAPP_ENABLE_MKTG_SITE }}"  # default: false
+  AUTOMATIC_AUTH_FOR_TESTING: "{{ EDXAPP_ENABLE_AUTO_AUTH }}"  # default: false
+  ENABLE_THIRD_PARTY_AUTH: "{{ EDXAPP_ENABLE_THIRD_PARTY_AUTH }}" # default: false
+  #search features in CMS
+  ENABLE_COURSEWARE_INDEX: true  # default: false
+  ENABLE_LIBRARY_INDEX: true  # default: false
+  #search features in LMS
+  ENABLE_COURSEWARE_SEARCH: true  # default: false
+  ENABLE_DASHBOARD_SEARCH: true  # default: false
+  ENABLE_COURSE_DISCOVERY: true # default: false
+  ENABLE_COMBINED_LOGIN_REGISTRATION: true  # default: false
+  ALLOW_HIDING_DISCUSSION_TAB: true
+  #for prereqs
+  MILESTONES_APP: true
+  ENABLE_PREREQUISITE_COURSES: true
+  #for bulk email
+  ENABLE_INSTRUCTOR_EMAIL: true
+  REQUIRE_COURSE_EMAIL_AUTH: true
+  # to avoid non staff user creating courses in studio
+  EDXAPP_DISABLE_COURSE_CREATION: true
+
+# Set to proper https://... string in cutomer
+# server-vars.
+EDXAPP_AUTH_EXTRA:
+  SENTRY_DSN: false
+
+EDXAPP_PLATFORM_NAME: "Appsembler edX Eucalyptus"
+COMMON_ENVIRONMENT: "default-env"
+COMMON_DEPLOYMENT: "default-staging"
+custom_requirements_file:   "{{ edxapp_code_dir }}/requirements/edx/appsembler.txt"
+EDXAPP_EXTRA_REQUIREMENTS: []
+
+EDXAPP_ENV_EXTRA: {}
+EDXAPP_AUTH_EXTRA: {}
+EDXAPP_MKTG_URL_LINK_MAP: {}
+
+## Stanford theme
+edxapp_use_custom_theme: false # false to disable & use std. theme
+edxapp_theme_name: "eucalyptus-theme-codebase"
+edxapp_theme_source_repo: "https://github.com/appsembler/edx-theme.git"
+edxapp_theme_version: "appsembler/eucalyptus-theme-codebase-comprehensive" #branch
+
+# Comprehensive theme
+EDXAPP_COMPREHENSIVE_THEME_DIR: "{{ edxapp_app_dir }}/themes"
+EDXAPP_COMPREHENSIVE_THEME_DIRS:
+  - "{{ EDXAPP_COMPREHENSIVE_THEME_DIR }}"
+# Name of the default site theme
+EDXAPP_DEFAULT_SITE_THEME: ""
+EDXAPP_ENABLE_COMPREHENSIVE_THEMING: true
+
+## NGINX Config
+#NGINX_ENABLE_SSL: true
+#NGINX_REDIRECT_TO_HTTPS: true
+#NGINX_SSL_CERTIFICATE: "/edx/app/certs/ssl/STAR.example.com-bundle.crt"
+#NGINX_SSL_KEY: "/edx/app/certs/ssl/STAR.example.com.key"
+NGINX_SET_X_FORWARDED_HEADERS: True #set to True if not behind load balancer
+EDXAPP_LMS_NGINX_PORT: 80
+EDXAPP_LMS_SSL_NGINX_PORT: 443
+EDXAPP_LMS_PREVIEW_NGINX_PORT: 80
+EDXAPP_CMS_NGINX_PORT: 80
+EDXAPP_CMS_SSL_NGINX_PORT: 443
+CMS_HOSTNAME: '~^((stage|prod)-)?studio.*' #for redirect within nginx
+
+nginx_sites:
+  - certs
+  - cms
+  - lms
+  - forum
+  - xqueue
+nginx_default_sites:
+  - lms
+#COMMON_HTPASSWD_USER: "user"
+#COMMON_HTPASSWD_PASS: "password"
+COMMON_ENABLE_BASIC_AUTH: False
+
+# disable if you need search engine indexing
+NGINX_ROBOT_RULES:
+  - { agent: '*', disallow: '/' }
+
+## Base
+EDXAPP_LMS_BASE: "lms.amc-staging-edx.appsembler.com"
+EDXAPP_PREVIEW_LMS_BASE: "preview.amc-staging-edx.appsembler.com"
+EDXAPP_CMS_BASE: "studio.amc-staging-edx.appsembler.com"
+
+## Site names
+EDXAPP_SITE_NAME: "lms.amc-staging-edx.appsembler.com"
+EDXAPP_LMS_SITE_NAME: "lms.amc-staging-edx.appsembler.com"
+EDXAPP_CMS_SITE_NAME: "studio.amc-staging-edx.appsembler.com"
+
+## Social media
+EDXAPP_YOUTUBE_API_KEY: ''
+EDXAPP_PLATFORM_FACEBOOK_ACCOUNT: "http://www.facebook.com/accountName"
+EDXAPP_PLATFORM_TWITTER_ACCOUNT: "@twitterHandle"
+
+## Email addresses
+EDXAPP_CONTACT_EMAIL: "customerservice+{{ COMMON_ENVIRONMENT }}@appsembler.com"
+EDXAPP_DEFAULT_FEEDBACK_EMAIL: "customerservice+{{ COMMON_ENVIRONMENT }}@appsembler.com"
+EDXAPP_DEFAULT_FROM_EMAIL: "customerservice+{{ COMMON_ENVIRONMENT }}@appsembler.com"
+EDXAPP_BUGS_EMAIL: "bugs+{{ COMMON_ENVIRONMENT }}@appsembler.com"
+EDXAPP_BULK_EMAIL_DEFAULT_FROM_EMAIL: "customerservice+{{ COMMON_ENVIRONMENT }}@appsembler.com"
+EDXAPP_PAYMENT_SUPPORT_EMAIL: "customerservice+{{ COMMON_ENVIRONMENT }}@appsembler.com"
+EDXAPP_PRESS_EMAIL: "customerservice+{{ COMMON_ENVIRONMENT }}@appsembler.com"
+EDXAPP_SERVER_EMAIL: "devops+{{ COMMON_ENVIRONMENT }}@appsembler.com"
+EDXAPP_TECH_SUPPORT_EMAIL: "technical+{{ COMMON_ENVIRONMENT }}@appsembler.com"
+EDXAPP_FEEDBACK_SUBMISSION_EMAIL: "customerservice+{{ COMMON_ENVIRONMENT }}@appsembler.com"
+EDXAPP_UNIVERSITY_EMAIL: "customerservice+{{ COMMON_ENVIRONMENT }}@appsembler.com"
+
+## Email backend
+EDXAPP_EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
+#EDXAPP_EMAIL_BACKEND: "django_ses.SESBackend"
+#EDXAPP_EMAIL_HOST: "email-smtp.us-..."
+#EDXAPP_EMAIL_PORT: 25
+#EDXAPP_EMAIL_HOST_USER: "xxxxxx"
+#EDXAPP_EMAIL_HOST_PASSWORD: "xxxxx"
+#EDXAPP_EMAIL_USE_TLS: true
+
+# AWS S3 configuration
+#EDXAPP_AWS_ACCESS_KEY_ID: "xxxxx"
+#EDXAPP_AWS_SECRET_ACCESS_KEY: "xxxxx"
+#EDXAPP_AWS_STORAGE_BUCKET_NAME: "edx-NAME-bucket"
+#EDXAPP_DEFAULT_FILE_STORAGE: "storages.backends.s3boto.S3BotoStorage"
+
+#grade downloads
+#EDXAPP_GRADE_BUCKET: "edx-NAME-grade-bucket"
+#EDXAPP_GRADE_STORAGE_TYPE: "S3"
+#EDXAPP_GRADE_ROOT_PATH: "grades"
+
+# profile images upload in s3
+# EDXAPP_PROFILE_IMAGE_BACKEND:
+#   class: storages.backends.s3boto.S3BotoStorage
+#   options:
+#     location: /profile_images
+#     bucket: edx-NAME-bucket
+#     custom_domain: s3-[bucket-region].amazonaws.com/edx-NAME-bucket
+#     headers:
+#       Cache-Control: max-age-{{ EDXAPP_PROFILE_IMAGE_MAX_AGE }}
+
+EDXAPP_REGISTRATION_EXTRA_FIELDS:
+  level_of_education: "optional"
+  gender: "optional"
+  year_of_birth: "optional"
+  mailing_address: "optional"
+  goals: "optional"
+  honor_code: "hidden"
+  terms_of_service: "required"
+  city: "hidden"
+  country: "hidden"
+
+# gunicorn workers
+EDXAPP_WORKERS:
+  lms: 5
+  cms: 1
+
+# celery workers
+EDXAPP_BROKER_HEARTBEAT: 0
+
+EDXAPP_CELERY_WORKERS:
+  - queue: low
+    service_variant: cms
+    concurrency: 1
+    monitor: true
+  - queue: default
+    service_variant: cms
+    concurrency: 1
+    monitor: true
+  - queue: high
+    service_variant: cms
+    concurrency: 1
+    monitor: true
+  - queue: low
+    service_variant: lms
+    concurrency: 1
+    monitor: true
+  - queue: default
+    service_variant: lms
+    concurrency: 1
+    monitor: true
+  - queue: high
+    service_variant: lms
+    concurrency: 1
+    monitor: true
+  - queue: high_mem
+    service_variant: lms
+    concurrency: 1
+    monitor: true
+
+# time zone
+TIME_ZONE: 'America/New_York'
+ANALYTICS_API_TIME_ZONE: "{{ TIME_ZONE }}"
+COURSE_DISCOVERY_TIME_ZONE: "{{ TIME_ZONE }}"
+CREDENTIALS_TIME_ZONE: "{{ TIME_ZONE }}"
+DISCOVERY_TIME_ZONE: "{{ TIME_ZONE }}"
+ECOMMERCE_TIME_ZONE: "{{ TIME_ZONE }}"
+EDXAPP_TIME_ZONE: "{{ TIME_ZONE }}"
+INSIGHTS_TIME_ZONE: "{{ TIME_ZONE }}"
+PROGRAMS_TIME_ZONE: "{{ TIME_ZONE }}"
+
+# oauth/https settings
+EDXAPP_OAUTH_ENFORCE_SECURE: false
+EDXAPP_LMS_BASE_SCHEME: 'http'
+
+# forum databases not on localhost
+FORUM_SINATRA_ENV: "production"
+FORUM_RACK_ENV: "production"
+
+# insights
+INSIGHTS_LMS_BASE: "http://{{ EDXAPP_LMS_BASE }}"
+INSIGHTS_CMS_BASE: "http://{{ EDXAPP_CMS_BASE }}"
+INSIGHTS_BASE_URL: "" # https://insights.example.com
+EDXAPP_ANALYTICS_DASHBOARD_URL: "{{INSIGHTS_BASE_URL}}"  # if enabled: http://insights.examples.com
