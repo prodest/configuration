@@ -9,7 +9,6 @@
   roles:
     - aws
     - role: scorm
-      when: "{{ EDXAPP_XBLOCK_SETTINGS }}.get('ScormXBlock', False)"
     - role: nginx
       nginx_sites:
       - lms
