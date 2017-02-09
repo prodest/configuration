@@ -1,3 +1,27 @@
+- name: copy Mongo CA certificate
+  copy: >
+    content="{{ EDXAPP_MONGO_SSL_CA_CERT }}"
+    dest="{{ EDXAPP_MONGO_SSL_CA_CERT_PATH }}"
+    mode=0440
+    owner=edxapp
+    group=www-data
+  tags:
+    - install
+    - install:configuration
+    - edxapp_cfg
+
+- name: copy Mongo client key and certificate
+  copy: >
+    content="{{ EDXAPP_MONGO_SSL_CLIENT_KEY ~ EDXAPP_MONGO_SSL_CLIENT_CERT }}"
+    dest="{{ EDXAPP_MONGO_SSL_CLIENT_CERT_PATH }}"
+    mode=0440
+    owner=edxapp
+    group=www-data
+  tags:
+    - install
+    - install:configuration
+    - edxapp_cfg
+
 - name: "create {{ item }} application config"
   template: >
     src={{ item }}.env.json.j2

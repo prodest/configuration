@@ -128,6 +128,9 @@
 - name: copy configuration template
   template: src=mongodb-standalone.conf.j2 dest=/etc/mongod.conf backup=yes
   notify: restart mongo
+  tags:
+    - "install"
+    - "install:configuration"
 
 - name: install logrotate configuration
   template: src=mongo_logrotate.j2 dest=/etc/logrotate.d/hourly/mongo
@@ -135,6 +138,32 @@
     - "install"
     - "install:configuration"
     - "logrotate"
+
+- name: copy CA certificate
+  copy: >
+    content="{{ MONGO_SSL_CA_CERT }}"
+    dest="{{ mongo_data_dir }}/ca.pem"
+    mode=0600
+    owner=mongodb
+    group=mongodb
+  when: MONGO_SSL_CA_CERT != ""
+  tags:
+    - install
+    - install:configuration
+
+- name: copy server key and certificate
+  copy: >
+    content="{{ MONGO_SSL_SERVER_KEY ~ '\n' ~ MONGO_SSL_SERVER_CERT }}"
+    dest="{{ mongo_data_dir }}/server.pem"
+    mode=0600
+    owner=mongodb
+    group=mongodb
+  when:
+    - MONGO_SSL_SERVER_KEY != ""
+    - MONGO_SSL_SERVER_CERT != ""
+  tags:
+    - install
+    - install:configuration
 
 - name: start mongo service
   service: name=mongod state=started
@@ -155,6 +184,9 @@
 - name: copy custered configuration template
   template: src=mongodb-clustered.conf.j2 dest=/etc/mongod.conf backup=yes
   when: MONGO_CLUSTERED
+  tags:
+    - "install"
+    - "install:configuration"
 
 - name: restart mongo service
   service: name=mongod state=restarted

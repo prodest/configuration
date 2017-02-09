@@ -33,6 +33,11 @@ MONGO_CLUSTERED: !!null
 MONGO_BIND_IP: 127.0.0.1
 MONGO_AUTH: true
 
+MONGO_SSL_MODE: "disabled"
+MONGO_SSL_CA_CERT: ""
+MONGO_SSL_SERVER_KEY: ""
+MONGO_SSL_SERVER_CERT: ""
+
 ##
 
 mongo_logpath: "{{ mongo_log_dir }}/mongodb.log"

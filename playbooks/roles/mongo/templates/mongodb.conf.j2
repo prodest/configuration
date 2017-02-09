@@ -39,6 +39,11 @@ replSet = {{ mongo_repl_set }}
 #auth = true
 auth = {{ MONGO_AUTH | ternary("true", "false") }}
 
+# SSL settings
+sslMode = {{ MONGO_SSL_MODE }}
+sslPEMKeyFile = {{ mongo_data_dir }}/server.pem
+sslCAFile = {{ mongo_data_dir }}/ca.pem
+
 # Verbose logging output.
 #verbose = true
 

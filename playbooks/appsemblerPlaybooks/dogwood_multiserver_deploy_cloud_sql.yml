@@ -11,12 +11,12 @@
     BACKUPS_MONGO: yes
     BACKUPS_MYSQL: no
   roles:
-    - { role: swapfile, SWAPFILE_SIZE: "2GB" }
-    - mongo
-    - oraclejdk
-    - elasticsearch
-    - memcached
-    - backups
+    #- { role: swapfile, SWAPFILE_SIZE: "2GB" }
+    - mongo_3_0
+    #- oraclejdk
+    #- elasticsearch
+    #- memcached
+    #- backups
 
 - name: Configure stateless edxapp server
   hosts: "edxapp-server"
@@ -27,54 +27,54 @@
     openid_workaround: True
     COMMON_ENABLE_DATADOG: False
   roles:
-    - { role: swapfile, SWAPFILE_SIZE: "4GB" }
+    #- { role: swapfile, SWAPFILE_SIZE: "4GB" }
     - mysql_init
-    - role: scorm
-      when: "{{ EDXAPP_XBLOCK_SETTINGS }}.get('ScormXBlock', False)"
-    - role: nginx
-      nginx_sites:
-      - cms
-      - lms
-      - forum
-      nginx_default_sites:
-      - lms
-    - { role: 'edxapp', celery_worker: True }
+    #- role: scorm
+    #  when: "{{ EDXAPP_XBLOCK_SETTINGS }}.get('ScormXBlock', False)"
+    #- role: nginx
+    #  nginx_sites:
+    #  - cms
+    #  - lms
+    #  - forum
+    #  nginx_default_sites:
+    #  - lms
+    #- { role: 'edxapp', celery_worker: True }
     - edxapp
-    - analytics_api
-    - edx_notes_api
-    - demo
-    - oauth_client_setup
-    - forum
-    - edx_ansible
+    #- analytics_api
+    #- edx_notes_api
+    #- demo
+    #- oauth_client_setup
+    #- forum
+    #- edx_ansible
     # scorm if desired.  requires more setup in server-vars
     # see https://github.com/appsembler/ssla-scorm-player/blob/nyif/master/README.md
     # - scorm
 
-- name: Install xqueue, notifier and rabbitmq
-  hosts: "mongo-server"
-  sudo: True
-  gather_facts: True
-  vars:
-    migrate_db: "yes"
-  roles:
-    - mysql_init
-    - role: nginx
-      nginx_sites:
-      - xqueue
-    - { role: 'rabbitmq', rabbitmq_ip: '0.0.0.0' }
-    - notifier
-    - { role: notifier, NOTIFIER_DIGEST_TASK_INTERVAL: "5" }
-    - { role: "xqueue", update_users: True }
-
-# must come after xqueue running
-- name: Install certs
-  hosts: "edxapp-server"
-  sudo: True
-  gather_facts: True
-  vars:
-    migrate_db: "yes"
-  roles:
-    - certs
-    - role: nginx
-      nginx_sites:
-      - certs
+#- name: Install xqueue, notifier and rabbitmq
+#  hosts: "mongo-server"
+#  sudo: True
+#  gather_facts: True
+#  vars:
+#    migrate_db: "yes"
+#  roles:
+#    - mysql_init
+#    - role: nginx
+#      nginx_sites:
+#      - xqueue
+#    - { role: 'rabbitmq', rabbitmq_ip: '0.0.0.0' }
+#    - notifier
+#    - { role: notifier, NOTIFIER_DIGEST_TASK_INTERVAL: "5" }
+#    - { role: "xqueue", update_users: True }
+#
+## must come after xqueue running
+#- name: Install certs
+#  hosts: "edxapp-server"
+#  sudo: True
+#  gather_facts: True
+#  vars:
+#    migrate_db: "yes"
+#  roles:
+#    - certs
+#    - role: nginx
+#      nginx_sites:
+#      - certs
