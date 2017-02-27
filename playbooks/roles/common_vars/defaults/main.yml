@@ -134,6 +134,10 @@ common_git_ppa: "ppa:git-core/ppa"
 # to supervisors 'conf.d' directory.
 disable_edx_services: False
 
+common_supervisor_program_autorestart: true
+common_supervisor_program_startsecs: 10
+common_supervisor_program_startretries: 1
+
 # Some apps run differently in dev mode(forums)
 # so different start scripts are generated in dev mode.
 devstack: False
