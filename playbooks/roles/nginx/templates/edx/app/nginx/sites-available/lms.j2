@@ -98,6 +98,13 @@ error_page {{ k }} {{ v }};
   }
      {% endif %}
 
+  # DO NOT force redirect to HTTPS if we're just accessing the status endpoint
+  # This is needed to properly do the GCP health checks
+  if ($request_uri = "/status/")
+  {
+   set $do_redirect_to_https "false"
+  }
+
   # Execute the actual redirect
   if ($do_redirect_to_https = "true")
   {
