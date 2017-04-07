@@ -102,7 +102,7 @@ error_page {{ k }} {{ v }};
   # This is needed to properly do the GCP health checks
   if ($request_uri = "/status/")
   {
-   set $do_redirect_to_https "false"
+   set $do_redirect_to_https "false";
   }
 
   # Execute the actual redirect
