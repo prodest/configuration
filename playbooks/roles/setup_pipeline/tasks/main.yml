@@ -3,7 +3,7 @@
   user:
     name: "{{ pipeline_user }}"
     home: "{{ pipeline_app_dir }}"
-    createhome: no
+    createhome: yes
     shell: /bin/bash
     generate_ssh_key: yes
   tags:
@@ -82,8 +82,8 @@
 
 - name: install python requirements
   pip:
-    requirements: {{ item }}
-    virtualenv: {{ pipeline_venv_dir }}
+    requirements: "{{ item }}"
+    virtualenv: "{{ pipeline_venv_dir }}"
   become_user: "{{ pipeline_user }}"
   #environment: "{{ pipeline_environment }}"
   #when: item.stat.exists
@@ -131,3 +131,8 @@
   become_user: "{{ pipeline_user }}"
   tags:
     - install
+
+- name: Adding hadoop user to pipeline group
+  user: name={{ hadoop_common_user }}
+        group={{ pipeline_group }}
+        append=yes

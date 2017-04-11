@@ -8,10 +8,11 @@
     ENABLE_DATADOG: False
     ENABLE_SPLUNKFORWARDER: False
     ENABLE_NEWRELIC: False
+    NGINX_SET_X_FORWARDED_HEADERS: True
   roles:
     - sudo
     - aws
-    - edxlocal
+    - mysql_init
     - memcache
     - analytics_api
     - analytics_pipeline
