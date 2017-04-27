@@ -58,6 +58,16 @@
     - install
     - install:base
 
+- name: create edxapp log dir
+  file:
+    path: "{{ pipeline_tasks_log_dir }}"
+    state: directory
+    owner: "{{ pipeline_user }}"
+    group: "{{ common_log_user }}"
+  tags:
+    - install
+    - install:base
+
 # Do A Checkout
 - name: checkout edx-analytics-pipeline repo into {{ pipeline_code_dir }}
   git_2_0_1:
