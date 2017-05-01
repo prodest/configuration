@@ -25,6 +25,7 @@
         - install
         - install:base
         - deploy:platform
+        - update_lms_theme
 
     - name: copy the template to the desired location
       template:
@@ -38,6 +39,7 @@
       tags:
         - install
         - install:base
+        - update_lms_theme
 
     - name: checkout Stanford-style theme
       git_2_0_1:
@@ -53,6 +55,7 @@
       tags:
         - install
         - install:code
+        - update_lms_theme
 
     - name: checkout comprehensive theme
       git_2_0_1:
@@ -68,6 +71,7 @@
       tags:
         - install
         - install:code
+        - update_lms_theme
 
     - name: checkout customer override theme
       git_2_0_1:
@@ -83,6 +87,7 @@
       tags:
         - install
         - install:code
+        - update_lms_theme
 
     - name: remove read-only ssh key
       file:
@@ -94,6 +99,7 @@
         - install:configuration
         - install:code
         - deploy:platform
+        - update_lms_theme
 
     - name: Remove and recreate the staticfiles directory so nothing stale can exist
       file:
@@ -107,12 +113,20 @@
       tags:
         - gather_static_assets
         - assets
+        - update_lms_theme:compile_css
 
     # Gather assets using paver if possible
-    - name: "gather {{ item }} static assets with paver"
-      command: "{{ COMMON_BIN_DIR }}/edxapp-update-assets-{{ item }}"
-      when: celery_worker is not defined and not devstack and item != "lms-preview"
-      with_items: "{{ service_variants_enabled }}"
+    - name: "gather lms static assets with paver"
+      command: "{{ COMMON_BIN_DIR }}/edxapp-update-assets-lms"
+      when: celery_worker is not defined and not devstack
+      tags:
+        - gather_static_assets
+        - assets
+        - update_lms_theme:compile_css
+
+    - name: "gather cms static assets with paver"
+      command: "{{ COMMON_BIN_DIR }}/edxapp-update-assets-cms"
+      when: celery_worker is not defined and not devstack"
       tags:
         - gather_static_assets
         - assets
@@ -127,6 +141,7 @@
       when: celery_worker is not defined and not disable_edx_services
       tags:
         - manage
+        - update_lms_theme
 
     - name: restart CMS
       supervisorctl:
@@ -149,3 +164,4 @@
       when: celery_worker is not defined and not disable_edx_services
       tags:
         - manage
+        - update_lms_theme
