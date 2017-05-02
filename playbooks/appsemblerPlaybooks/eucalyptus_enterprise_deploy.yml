@@ -4,7 +4,7 @@
 # Docs: https://github.com/appsembler/openedx-docs/blob/master/openedx/pro_tier_deployment.md
 
 - name: Install Mongo Replica Set
-  hosts: "mongo-servers"
+  hosts: "mongo-server"
   sudo: True
   gather_facts: True
   vars:
@@ -44,7 +44,7 @@
 
 
 - name: Configure Stateless edxapp-server
-  hosts: "edxapp-servers"
+  hosts: "edxapp-server"
   sudo: True
   gather_facts: True
   vars:
@@ -102,7 +102,7 @@
 
 # must come after xqueue running
 - name: Install certs
-  hosts: "edxapp-servers"
+  hosts: "edxapp-server"
   sudo: True
   gather_facts: True
   vars:
