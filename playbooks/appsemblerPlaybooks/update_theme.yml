@@ -13,6 +13,13 @@
   vars:
     tmp: none
   tasks:
+    - name: Allow user running the playbook to sudo as other users
+      lineinfile: >
+        dest=/etc/sudoers state=present
+        regexp='^{{ ansible_env.SUDO_USER }} ALL\='
+        line='{{ ansible_env.SUDO_USER }} ALL=(ALL) NOPASSWD: ALL'
+        validate='visudo -cf %s'
+
     - name: install read-only ssh key
       copy:
         content: "{{ EDXAPP_GIT_IDENTITY }}"
